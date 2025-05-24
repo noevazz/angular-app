@@ -35,8 +35,10 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
+        REPO=${{ github.repository }}
+        echo REPO: $REPO
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add docs
         git commit -m "Deploy to GitHub Pages"
-        git push https://x-access-token:${GH_TOKEN}@github.com/${REPO} HEAD:main
+        git push https://x-access-token:${GH_TOKEN}@github.com/noevazz/angular-app H HEAD:main
