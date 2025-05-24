@@ -39,4 +39,4 @@ jobs:
         git config user.email "github-actions@github.com"
         git add docs
         git commit -m "Deploy to GitHub Pages"
-        git push https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }} HEAD:main
+        git push https://x-access-token:${GH_TOKEN}@github.com/${REPO} HEAD:main
