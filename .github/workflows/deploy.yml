@@ -21,7 +21,7 @@ jobs:
       run: npm ci
 
     - name: Build Angular app
-      run: run: npx ng build --configuration production
+      run: npx ng build --configuration production
 
     - name: Move built files to docs root
       run: |
