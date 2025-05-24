@@ -38,6 +38,8 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "docs",
+              "baseHref": "/angular-app/",
               "budgets": [
                 {
                   "type": "initial",
