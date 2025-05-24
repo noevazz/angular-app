@@ -5,16 +5,14 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repo
       uses: actions/checkout@v4
-      with:
-        ref: main
 
-    - name: Set up Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
@@ -25,23 +23,21 @@ jobs:
     - name: Build Angular app
       run: npx ng build --configuration production
 
-    - name: Move built files to docs root
+    - name: Copy output to temp dir
       run: |
-        mv docs/browser/* docs/
-        rm -rf docs/browser
+        mkdir gh-pages
+        cp -r docs/browser/* gh-pages/
+        cp docs/.nojekyll gh-pages/.nojekyll || true
 
-    - name: Add .nojekyll
-      run: touch docs/.nojekyll
-
-    - name: Remove Git credentials from bot
-      run: git config --global --unset credential.helper
-
-    - name: Commit built app to the repo
+    - name: Deploy to gh-pages branch
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
+        cd gh-pages
+        git init
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
-        git add docs
-        git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
-        git push https://x-access-token:${GH_TOKEN}@github.com/noevazz/angular-app.git HEAD:main
+        git add .
+        git commit -m "Deploy to GitHub Pages"
+        git branch -M gh-pages
+        git push --force https://x-access-token:${GH_TOKEN}@github.com/noevazz/angular-app.git gh-pages
