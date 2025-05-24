@@ -35,10 +35,8 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        echo "Token starts with: ${GH_TOKEN:0:4}"
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git add docs
         git commit -m "Deploy to GitHub Pages"
-        git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/noevazz/angular-app.git
-        git push origin HEAD:main
+        git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/noevazz/angular-app.git HEAD:main
